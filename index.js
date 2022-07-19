@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from 'express';
 import { equipmentRouter } from "./routes/Equipments.js";
 import cors from "cors"
+import { usersRouter } from './routes/users.js';
 dotenv.config();
 
 
@@ -13,17 +14,15 @@ app.use(cors());
 
 const PORT=process.env.PORT;
 
-app.use(express.json())//it intercepts all post apis & applies express.json()
-// const MONGO_URL="mongodb://localhost"
+app.use(express.json())
 const MONGO_URL=process.env.MONGO_URL;
  async function createConnection(){
-  const client =new MongoClient(MONGO_URL);//like dailing a num
-   await client.connect();//like call button
+  const client =new MongoClient(MONGO_URL);
+   await client.connect();
    console.log("mongo is connected😊👍");
    return client;
 }
- export const client =await createConnection();//top level await 
- //npm run dev have installed this 
+ export const client =await createConnection();
 
 
 
@@ -35,6 +34,7 @@ app.get('/', function (request, response) {
 
 
 app.use("/Equipments",equipmentRouter)
+app.use("/users",usersRouter)
 
 
 app.listen(PORT,()=>console.log(`App started in ${PORT}`));
